@@ -125,10 +125,17 @@ app.get('/post', async (req, res) => {
 );
 });
 
-app.get('/post/id', async (req,res) => {
-  const {id}= req.params;
-  const postdetails= await Post.findById(id);
-   res.json(postdetails.populate('author',"username"));
+app.get('/post/:id', async (req, res) => {
+  try {
+    const {id} = req.params;
+    const postdetails = await Post.findById(id).populate('author', 'username');
+    if (!postdetails) {
+      return res.status(404).json({message: 'Post not found'});
+    }
+    res.json(postdetails);
+  } catch (error) {
+    res.status(500).json({message: 'Server error'});
+  }
 });
 
 app.listen(4000, () => {

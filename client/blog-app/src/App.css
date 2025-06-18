@@ -37,13 +37,27 @@ header nav{
 
 div.blog{
   display: flex;
-  /* grid-template-columns: .9fr 1.1fr; */
+  grid-template-columns: 1fr;
   gap:5rem;
   padding-left:9rem;
   padding-right: 9rem;
   margin-bottom: 30px;
 }
 
+div.blog .image{
+  max-width: 400px;
+  max-height: 300px;
+  width: 100%;
+  height: 100%;
+  display:flex;
+   overflow:hidden;
+}
+@media screen and (min-width: 720x){
+  div.blog{
+    grid-template-columns: .9fr 1.1fr;
+  }
+ 
+}
 div.blog div.content h2{
   font-size: 1.5rem;
   margin:0;
@@ -93,5 +107,24 @@ button{
 }
 
 form.login h1, form.register h1{
+  text-align: center;
+}
+
+div.post-page div.image{
+   max-height: 150px;
+   display:flex;
+   overflow:hidden;
+}
+
+div.post-page div.image img{
+  object-fit:cover;
+  object-position: center center;
+}
+
+div.post-page a{
+  color: black;
+  text-decoration: underline;
+}
+div.post-page h1{
   text-align: center;
 }
