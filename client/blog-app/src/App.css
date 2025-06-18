@@ -1,0 +1,97 @@
+*{
+ box-sizing: border-box;
+}
+body{
+  background-color: white;
+  color:rgb(1, 7, 19);
+}
+
+main {
+    max-width: 1200px;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+    margin-top: 20px;
+    /* width: 90vw; 
+    max-width: none;
+    padding: 0 20px; */
+}
+header a{
+  text-decoration: none;
+  color: inherit;
+}
+
+header a.logo{
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+header nav{
+  display: flex;
+  gap: 15px;
+}
+
+div.blog{
+  display: flex;
+  /* grid-template-columns: .9fr 1.1fr; */
+  gap:5rem;
+  padding-left:9rem;
+  padding-right: 9rem;
+  margin-bottom: 30px;
+}
+
+div.blog div.content h2{
+  font-size: 1.5rem;
+  margin:0;
+}
+
+.content h2{
+  text-decoration: none;
+  color: black;
+}
+div.blog p.info{
+  margin: 6px 0;
+  color: grey;
+  font-size: 0.7rem;
+  font-weight: bold;
+  display: flex;
+  gap: 10px;
+}
+
+div.blog p.summary{
+  margin: 10px 0;
+  line-height: 1.4 rem;
+}
+
+form.login form.register{
+  margin: 0 auto;
+
+}
+
+input{
+  display: block;
+  margin-bottom: 5px;
+  width: 100%;
+  padding: 5px 7px;
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: rgb(248, 237, 237);
+}
+
+button{
+  width: 100%;
+  display:block;
+  background-color: rgb(85, 64, 204);
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  padding: 5px 0;
+}
+
+form.login h1, form.register h1{
+  text-align: center;
+}

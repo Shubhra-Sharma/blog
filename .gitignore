@@ -1,0 +1,6 @@
+# Dependencies in client and api folders
+client/node_modules/
+api/node_modules/
+api/uploads/
+# Environment files
+.env
