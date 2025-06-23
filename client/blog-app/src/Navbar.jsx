@@ -24,7 +24,7 @@ const username = userInfo?.username;
   return (
     
         <header>
-        <Link to ='/' className='logo'>Blog</Link>    
+        <Link to ='/' className='logo'>ByteScript</Link>    
         <nav>
           {username && (
             <>

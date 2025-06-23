@@ -1,0 +1,58 @@
+.hero-container {
+  position: relative;
+  width: 100vw;
+  height: 60vh;
+  overflow: hidden;
+  margin: 0;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  margin-top: -1.5vh;
+  margin-bottom: 40px;
+}
+  
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(255, 255, 255);
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 1rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    width: 100%;
+  }
+  
+  .hero-line {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .animate-line1 {
+    animation: fadeInUp 1s ease forwards;
+  }
+  
+  .animate-line2 {
+    animation: fadeInUp 1s ease forwards 0.5s;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }

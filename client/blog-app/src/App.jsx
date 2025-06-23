@@ -8,7 +8,6 @@ import { UserContextProvider } from './UserContext';
 import CreatePost from './pages/CreatePost';
 import SinglePost from './pages/SinglePost';
 function App() {
-  console.log('App component rendering');
   return (
     <UserContextProvider>
     <Routes>

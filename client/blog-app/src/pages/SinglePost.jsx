@@ -25,7 +25,7 @@ export default function SinglePost(){
                 <img src={`http://localhost:4000/${postInfo.cover}`} alt="image" />
             </div>
             <h1>{postInfo.title}</h1>
-            <div dangerouslySetInnerHTML={{__html: postInfo.content}}/>
+            <div className='content' dangerouslySetInnerHTML={{__html: postInfo.content}}/>
         </div>
     );
 }
