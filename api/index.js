@@ -8,28 +8,59 @@ import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
 import connectDB from "./db/index.js";
 import multer from "multer";
-import fs from 'fs';
 import Post from "./models/Post.js";
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
 const app = express();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-app.use('/uploads', express.static(__dirname + '/uploads'));
-
-const uploadMiddleWare= multer({dest: 'uploads/'});
-const salt= bcrypt.genSaltSync(10);
-const secretjwt= process.env.JWT_SECRET;
-
 
 app.use(cors({
   credentials:true,
   origin:process.env.CORS_ORIGIN
 }));
+
+const salt= bcrypt.genSaltSync(10);
+const secretjwt= process.env.JWT_SECRET;
 app.use(express.json());
 // for checking valid token
 app.use(cookieParser());
 connectDB();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'blog-uploads',
+    allowed_formats: ['jpg', 'png', 'jpeg'],
+  },
+});
+
+const uploadMiddleWare = multer({ storage: storage });
+
+app.post('/post', uploadMiddleWare.single('file'), async (req, res) => {
+  const { token } = req.cookies || {};
+  if (!token) {
+    return res.status(401).json('No token provided');
+  }
+  jwt.verify(token, secretjwt, {}, async (err, info) => {
+    if (err) throw err;
+    const { title, summary, content } = req.body;
+    
+    const postdetails = await Post.create({
+      title,
+      summary,
+      content,
+      cover: req.file.path,
+      author: info.id,
+    });
+    
+    res.json(postdetails);
+  });
+});
+
 
 app.post('/register', async (req, res) => {
     const {username,password}=req.body;
@@ -94,30 +125,6 @@ app.post('/logout', (req,res) => {
   res.cookie('token', '').json('ok');
 })
 
-app.post('/post', uploadMiddleWare.single('file') ,async (req,res) => {
-   const {originalname, path}= req.file;
-   //to get the extension name
-   const parts= originalname.split('.');
-   const ext = parts[parts.length - 1];
-   const newPath= path+'.'+ ext;
-   fs.renameSync(path, newPath);
-
-   const {token}= req.cookies;
-   jwt.verify(token, secretjwt, {}, async (err,info) => {
-    if(err) throw err;
-    const {title, summary, content} = req.body;
-   const postdetails= await Post.create({
-      title,
-      summary,
-      content,
-      cover: newPath,
-      author: info.id,
-   });
-        
-   res.json(postdetails);
-  });
-
-});
 app.get('/post', async (req, res) => {
   res.json(await Post.find()
   .populate("author", "username")
