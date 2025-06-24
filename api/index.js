@@ -13,8 +13,11 @@ import { v2 as cloudinary } from 'cloudinary';
 const app = express();
 
 app.use(cors({
-  credentials:true,
-  origin:process.env.CORS_ORIGIN
+  credentials: true,
+  origin: process.env.CORS_ORIGIN, // Make sure this is your frontend URL
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 const salt= bcrypt.genSaltSync(10);
@@ -39,12 +42,10 @@ const uploadMiddleWare = multer({
 });
 
 app.post('/post', uploadMiddleWare.single('file'), async (req, res) => {
-  const { token } = req.cookies || {};
 
   if (!token) {
     return res.status(401).json('No token provided');
   }
-
   jwt.verify(token, secretjwt, {}, async (err, info) => {
     if (err) {
       console.error('JWT error:', err);

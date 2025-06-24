@@ -22,16 +22,16 @@ export default function CreatePost(){
 // files[0] because even if multiple files are uploaded, only the first one gets picked
      ev.preventDefault();
         try {
-        const response = await fetch('http://localhost:4000/post',{
+        const response = await fetch('https://blog-production-896e.up.railway.app/post',{
             method: 'POST',
             body: data,
             credentials: 'include',
         });
-
         if (response.ok) {
             setRedirect(true);
         } else {
-            console.error('Failed to create post');
+             const errorText = await response.text();
+            console.error('Failed to create post:', errorText);
         }
     } catch (error) {
         console.error('Error:', error);

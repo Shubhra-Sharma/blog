@@ -4,7 +4,7 @@ import {UserContext} from "./UserContext";
 function Navbar(){
   const {setUserInfo, userInfo} = useContext(UserContext);
   useEffect(() => {
-    fetch('http://localhost:4000/profile', {
+    fetch('https://blog-production-896e.up.railway.app/profile', {
       credentials: 'include',
   }).then(response => {
     response.json().then(userInfo => {
@@ -14,7 +14,7 @@ function Navbar(){
   }, []);
 
 function logout(){
-  fetch('http://localhost:4000/logout',{
+  fetch('https://blog-production-896e.up.railway.app/logout',{
     credentials: 'include',
     method: 'POST',
   })
