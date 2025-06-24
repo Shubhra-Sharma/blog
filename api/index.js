@@ -10,7 +10,6 @@ import connectDB from "./db/index.js";
 import multer from "multer";
 import Post from "./models/Post.js";
 import { v2 as cloudinary } from 'cloudinary';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
 const app = express();
 
 app.use(cors({
@@ -30,37 +29,70 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'blog-uploads',
-    allowed_formats: ['jpg', 'png', 'jpeg'],
-  },
-});
 
-const uploadMiddleWare = multer({ storage: storage });
+const storage = multer.memoryStorage();
+const uploadMiddleWare = multer({ 
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    cb(null, file.mimetype.startsWith('image/'));
+  }
+});
 
 app.post('/post', uploadMiddleWare.single('file'), async (req, res) => {
   const { token } = req.cookies || {};
+
   if (!token) {
     return res.status(401).json('No token provided');
   }
+
   jwt.verify(token, secretjwt, {}, async (err, info) => {
-    if (err) throw err;
-    const { title, summary, content } = req.body;
-    
-    const postdetails = await Post.create({
-      title,
-      summary,
-      content,
-      cover: req.file.path,
-      author: info.id,
-    });
-    
-    res.json(postdetails);
+    if (err) {
+      console.error('JWT error:', err);
+      return res.status(401).json('Invalid token');
+    }
+
+    if (!req.file) {
+      return res.status(400).json('File not found');
+    }
+
+    try {
+      const uploadPromise = new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: 'blog-uploads',
+            resource_type: 'image',
+            allowed_formats: ['jpg', 'png', 'jpeg']
+          },
+          (error, result) => {
+            if (error) {
+              console.error('Cloudinary upload error:', error);
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          }
+        );
+        
+        uploadStream.end(req.file.buffer);
+      });
+
+      const cloudinaryResult = await uploadPromise;
+      const { title, summary, content } = req.body;
+
+      const postdetails = await Post.create({
+        title,
+        summary,
+        content,
+        cover: cloudinaryResult.secure_url,
+        author: info.id,
+      });
+      res.json(postdetails);
+
+    } catch (error) {
+      res.status(500).json('Server error: ' + error.message);
+    }
   });
 });
-
 
 app.post('/register', async (req, res) => {
     const {username,password}=req.body;
