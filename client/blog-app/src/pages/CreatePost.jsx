@@ -20,10 +20,14 @@ export default function CreatePost(){
     data.set('content', content);
     data.set('file', files[0]);
 // files[0] because even if multiple files are uploaded, only the first one gets picked
+  const token = localStorage.getItem('token');
      ev.preventDefault();
         try {
         const response = await fetch('https://blog-production-896e.up.railway.app/post',{
             method: 'POST',
+            headers: {
+                    'Authorization': `Bearer ${token}`
+                },
             body: data,
             credentials: 'include',
         });
