@@ -42,7 +42,19 @@ const uploadMiddleWare = multer({
 });
 
 app.post('/post', uploadMiddleWare.single('file'), async (req, res) => {
-
+  console.log('=== POST REQUEST DEBUG ===');
+  console.log('All cookies received:', req.cookies);
+  console.log('Headers:', req.headers.cookie);
+  console.log('Authorization header:', req.headers.authorization);
+  
+  // Extract token from cookies OR authorization header
+  const token = req.cookies?.token || 
+                (req.headers.authorization && req.headers.authorization.startsWith('Bearer ') 
+                  ? req.headers.authorization.slice(7) 
+                  : null);
+  
+  console.log('Final token:', token);
+  
   if (!token) {
     return res.status(401).json('No token provided');
   }
