@@ -54,7 +54,7 @@ app.post('/post', uploadMiddleWare.single('file'), async (req, res) => {
                   : null);
   
   console.log('Final token:', token);
-  
+
   if (!token) {
     return res.status(401).json('No token provided');
   }
@@ -144,6 +144,7 @@ app.post('/login', async (req, res) => {
         res.cookie('token', token).json({
           id: userdetails._id,
           username,
+          token: token,
         });
       });
     } else {
