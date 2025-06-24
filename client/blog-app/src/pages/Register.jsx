@@ -1,11 +1,11 @@
 import { useState } from "react"
-
+import config from '../config';
 export default function Register() {
     const [username,setUsername]= useState('');
     const [password,setPassword]= useState('');
     async function register(ev){
       ev.preventDefault();
-      const response= await fetch('https://blog-production-896e.up.railway.app/register', {
+      const response= await fetch(`${config.API_URL}/register`, {
         method: 'POST',
         body: JSON.stringify({username, password}),
         headers: {'Content-Type': 'application/json'},

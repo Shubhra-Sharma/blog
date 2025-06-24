@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import {UserContext} from "./UserContext";
+import config from './config';
 function Navbar(){
   const {setUserInfo, userInfo} = useContext(UserContext);
   useEffect(() => {
-    fetch('https://blog-production-896e.up.railway.app/profile', {
+    fetch(`${config.API_URL}/profile`, {
       credentials: 'include',
   }).then(response => {
     response.json().then(userInfo => {
@@ -14,7 +15,7 @@ function Navbar(){
   }, []);
 
 function logout(){
-  fetch('https://blog-production-896e.up.railway.app/logout',{
+  fetch(`${config.API_URL}/logout`,{
     credentials: 'include',
     method: 'POST',
   })

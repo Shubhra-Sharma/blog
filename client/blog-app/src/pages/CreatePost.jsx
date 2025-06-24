@@ -4,6 +4,7 @@ import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 import 'highlight.js/styles/github.css';
 import { Navigate } from "react-router-dom";
+import config from '../config';
 export default function CreatePost(){
     
     const [title,setTitle] = useState(' ');
@@ -23,7 +24,7 @@ export default function CreatePost(){
   const token = localStorage.getItem('token');
      ev.preventDefault();
         try {
-        const response = await fetch('https://blog-production-896e.up.railway.app/post',{
+        const response = await fetch(`${config.API_URL}/post`,{
             method: 'POST',
             headers: {
                     'Authorization': `Bearer ${token}`

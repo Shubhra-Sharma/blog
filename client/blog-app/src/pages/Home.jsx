@@ -1,10 +1,11 @@
 import Post from "../Post";
 import { useState, useEffect } from "react";
 import Hero from './Hero';
+import config from '../config';
 export default function Home(){
     const[posts, setPosts] = useState([]);
     useEffect(() => {
-      fetch('https://blog-production-896e.up.railway.app/post').then(response => {
+      fetch(`${config.API_URL}/post`).then(response => {
         response.json().then(posts => {
             setPosts(posts);
         });

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
+import config from '../config';
 export default function SinglePost(){
     const [postInfo, setPostInfo] = useState(null);
     const {id} = useParams();
     
     useEffect(() => {
-      fetch(`https://blog-production-896e.up.railway.app/post/${id}`)
+      fetch(`${config.API_URL}/post/${id}`)
       .then(response => {
         response.json().then(postInfo => {
             setPostInfo(postInfo);

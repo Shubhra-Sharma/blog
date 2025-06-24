@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
+import config from '../config';
 export default function Login(){
     const [username, setUsername]=useState('');
     const [password, setPassword]=useState('');
@@ -8,7 +9,7 @@ export default function Login(){
     const {setUserInfo} = useContext(UserContext);
     async function login(ev){
       ev.preventDefault();
-      const response = await fetch('https://blog-production-896e.up.railway.app/login', {
+      const response = await fetch(`${config.API_URL}/login`, {
         method: 'POST',
         body: JSON.stringify({username,password}),
         headers: {'Content-Type': 'application/json'},
