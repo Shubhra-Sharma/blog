@@ -1,5 +1,5 @@
 const config = {
-  API_URL: 'https://blog-production-896e.up.railway.app'
+  API_URL: 'https://blog-tiow.onrender.com'
 };
 
 export default config;
