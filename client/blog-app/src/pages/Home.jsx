@@ -1,6 +1,5 @@
 import Post from "../Post";
 import { useState, useEffect } from "react";
-import Hero from './Hero';
 import config from '../config';
 export default function Home(){
     const[posts, setPosts] = useState([]);
@@ -13,7 +12,6 @@ export default function Home(){
     }, []);
     return(
       <>
-      <Hero/>
       <div className="text">
         Welcome to ByteScript where every line of code has a story, a lesson, a breakthrough, or a bug that taught us more than a tutorial ever could. This platform is a space for developers, learners, and tech lovers to share knowledge, experiences, and their thoughts on technological advancements.
       </div>
